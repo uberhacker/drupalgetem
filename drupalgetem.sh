@@ -47,7 +47,7 @@ echo "Files that have changed recently:"
 today=$(date -u +%s)
 psa=$(date -ud '2014-10-15' +%s)
 days=$(( ( $today - $psa )/60/60/24 ))
-find . -type f -mtime -1 -exec ls -la {} \; | egrep -v '(\.git|\.svn)'
+find . -type f -mtime -$days -exec ls -la {} \; | egrep -v '(\.git|\.svn)'
 echo ""
 echo "PHP files found in sites/default/files:"
 find sites/default/files/ -type f -name '*.php' -exec ls -la {} \; | egrep -v '(\.git|\.svn)'
