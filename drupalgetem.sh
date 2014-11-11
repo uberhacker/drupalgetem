@@ -11,7 +11,7 @@ fi
 if [[ -d ".git" ]]; then
   CMDS="drush git"
 fi
-if [[ "$CMDS" -eq "drush" ]]; then
+if [[ "$CMDS" == "drush" ]]; then
   echo "No git or svn repository exists."
 fi
 for i in $CMDS
@@ -47,15 +47,15 @@ echo "Files that have changed recently:"
 today=$(date -u +%s)
 psa=$(date -ud '2014-10-15' +%s)
 days=$(( ( $today - $psa )/60/60/24 ))
-find . -type f -mtime -$days -exec ls -la {} \;
+find . -type f -mtime -1 -exec ls -la {} \; | egrep -v '(\.git|\.svn)'
 echo ""
 echo "PHP files found in sites/default/files:"
-find sites/default/files/ -type f -name '*.php' -exec ls -la {} \;
+find sites/default/files/ -type f -name '*.php' -exec ls -la {} \; | egrep -v '(\.git|\.svn)'
 echo ""
 echo ".htaccess files found in sites/default/files:"
-find sites/default/files/ -type f -name '.htaccess' -exec ls -la {} \;
+find sites/default/files/ -type f -name '.htaccess' -exec ls -la {} \; | egrep -v '(\.git|\.svn)'
 echo ""
-find sites/default/files/ -type f -name '.htaccess' -exec cat {} \;
+find sites/default/files/ -type f -name '.htaccess' -exec cat {} \; | egrep -v '(\.git|\.svn)'
 echo ""
 echo "Users who have accessed the site recently:"
 drush sqlq --extra=-t "SELECT name, mail, FROM_UNIXTIME(access) AS last_access FROM users WHERE access > UNIX_TIMESTAMP('2014-10-15 00:00:00') ORDER BY access"
