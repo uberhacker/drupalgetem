@@ -57,6 +57,9 @@ find sites/default/files/ -type f -name '.htaccess' -exec ls -la {} \; | egrep -
 echo ""
 find sites/default/files/ -type f -name '.htaccess' -exec cat {} \; | egrep -v '(\.git|\.svn)'
 echo ""
+echo "Files with malicious calls to eval() (ignore php and devel modules):"
+grep -nRH --exclude=*.js 'eval(' *
+echo ""
 echo "Users who have accessed the site recently:"
 drush sqlq --extra=-t "SELECT name, mail, FROM_UNIXTIME(access) AS last_access FROM users WHERE access > UNIX_TIMESTAMP('2014-10-15 00:00:00') ORDER BY access"
 echo ""
